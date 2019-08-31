@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="../common.css" />
+</head>
+<body>
+<h3>ミニゲーム</h3>
+    <table class="Table01">
+        <tr>
+            <th>タイトル</th>
+            <td>撃ちぬけ!TechC
+        </td>
+        </tr>
+        <tr>
+            <th>プログラム概要</th>
+            <td>緊張感が感じられる２ｄシューティングゲーム</td>
+        </tr>
+        <tr>
+            <th>制作期間</th>
+            <td>2018/11/01 ~ 2018/12/20 2が月程度</td>
+        </tr>
+        <tr>
+            <th>使用言語・ソフト</th>
+            <td>Unity を使用し、Visual Studio Code を使い windows 上で記述・デバッグ。</td>
+        </tr>
+        <tr>
+            <th>Github</th>
+            <td><a href="https://github.com/Ryut4919/UCHinuKe-TechC">UCHinuKe-TechC</a></td>
+        </tr>
+    </table>
+    <h3>担当部分</h3>
+    <div class="box1">
+    <p>プランナーからゲームのやり方を聞いて、それ以外は自分一人で考えるゲームです。</p>
+    <p>画像からゲームに似合う音楽などいろいろ自分で探さないといけないので、とても良い経験が得た。</p>
+    <p>Scriptをどうやってきれいにするのは、私がこの作品一番注意する所です。</p>
+    </div>
+    <h4>ソースコード</h4>
+
+    <div onclick="obj=document.getElementById('menu1').style; obj.display=(obj.display=='none')?'block':'none';">
+        <a style="cursor:pointer;">▼ GameManage.cs</a>
+    </div>
+
+    <div id="menu1" style="display:none;clear:both;">
+        <div class="rollbox">
+        <pre>
+                <code>
+    using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class GameManage : MonoBehaviour {
+
+    //データ保存用
+    [SerializeField]
+    SSDataControl _ssDataControl;
+    //効果音
+    [SerializeField]
+    AudioSource SE_audio;
+    [SerializeField]
+    GameObject _StartButton;
+
+    public CreateSuraimu _suraimuCreate;
+    public GameObject ControlWLScene;
+    
+    //ゲーム失敗信号
+    public bool Over;
+    
+    //ゲームクリア信号
+    public bool Clear;
+
+    //ゲーム失敗
+    bool _over = false;
+    
+    //ものを非表示
+    bool Clearall = false;
+
+    //操作説明書を隠す
+    bool PanelClose = false;
+
+    [SerializeField]
+    private GameObject _PointCount;
+
+    //操作説明書
+    [SerializeField]
+    private GameObject _controlPanel;
+
+    public GameObject _pointChecking;
+    //最初ゲームスタートのカウントダウン
+    public  Text _text;
+    
+    //カウントダウン時間
+    float timer = 3;
+    public GameObject BigBig;
+    
+    //スライムの撃破数
+    public int Point;
+
+    private bool _gameClear;
+
+    //データを送る用
+    private bool Sended;
+
+    public AudioClip[] _audio;
+    
+
+    void Start()
+    {
+        Screen.SetResolution(1980, 980, true);
+
+        //操作説明書を指定ところへ
+        iTween.MoveTo(_controlPanel, new Vector3(990.0f, 540.0f, 0), 3.0f);
+    }
+    
+	// Update is called once per frame
+	void Update () {
+        
+        PanelC();
+        if (PanelClose)
+        {
+                #region Timer
+            timer -= Time.deltaTime;
+            //整数のように表示する
+            _text.text = "" + timer.ToString("0");
+            if (timer < 0)
+            {
+                _text.text = "Start!!!";
+                //BGMをプレイしてない場合
+                if (!GetComponent&lt;AudioSource&gt;().isPlaying&&!Clearall)
+                {
+                    //BGMをプレイする
+                    GetComponent&lt;AudioSource&gt;().Play();
+                }
+            }
+            if (timer &lt; -1 && !Clearall)
+            {
+                //カウントダウン文字を非表示
+                _text.gameObject.SetActive(false);
+                //ターゲットマークを表示
+                BigBig.SetActive(true);
+                //撃破数を表示
+                _PointCount.SetActive(true);
+            }
+            #endregion
+            #region gameOver
+            //ゲームオーバーの場合
+            if (Over&& !_over)
+            {
+                //gamelose
+                _pointChecking.SetActive(false);
+                //ゲーム失敗
+                _over = true;
+                //ゲームー終了パネルを表示
+                ControlWLScene.SetActive(true);
+                ControlWLScene.transform.GetChild(0).GetComponent&lt;Text>().text = "ゲーム失敗";
+#region 失敗音
+                GetComponent&lt;AudioSource>().Stop();
+                SE_audio.clip = _audio[1];
+                SE_audio.pitch = 0.6f;
+                SE_audio.Play();
+#endregion 
+                ClearAll();
+  
+                //Debug.Log("GameOver");
+            }
+            #endregion
+        }
+
+        #region Getpoint点数を取得
+        /*else*/
+        if (_PointCount.GetComponent<PointCheck>().GameClear&&!_gameClear)
+        {
+            //game win
+            //スクリプトにゲームー終了信号を出す
+            _suraimuCreate.GameOver = true;
+            //ゲームー終了パネルを表示
+            ControlWLScene.SetActive(true);
+            ControlWLScene.transform.GetChild(0).GetComponent<Text>().text = "ゲームクリアー！！";
+            ControlWLScene.transform.GetChild(1).GetComponent<Text>().text = "点数:" + GetComponent<LifePoint>().LifeP;
+            ControlWLScene.transform.GetChild(1).GetComponent<Text>().color = Color.black;
+            _gameClear = true;
+
+            #region 勝利音
+            GetComponent<AudioSource>().Stop();
+            SE_audio.clip = _audio[0];
+            //SE_audio.pitch = 0.6f;
+            SE_audio.Play();
+            #endregion
+
+            ClearAll();
+        }
+        #endregion
+
+        if (Sended)
+        {
+            SendDataTo();
+            Sended = false;
+        }
+    }
+
+    public void SendDataTo()
+    {
+
+            //今のゲームモード
+            int gameMode = 0;
+            //最大のゲームモード
+            int MaxMode = 1;
+            //取った点数
+            int gameScore = GetComponent<LifePoint>().LifeP;
+            //ゲーム最大点数
+            int MaxScore = 3;
+
+            _ssDataControl.SaveData(gameMode, MaxMode, gameScore, MaxScore);
+
+    }
+
+    void PanelC()
+    {
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && !PanelClose)
+        {
+            StartCoroutine("StartShow");
+        }
+    }
+
+    IEnumerator StartShow()
+    {
+
+        iTween.ScaleBy(_StartButton, new Vector3(0,0,0), 1.5f);
+        //効果音のプレイする
+        if (!SE_audio.isPlaying)
+        {
+            SE_audio.Play();
+        }
+        yield return new WaitForSeconds(1.5f);
+        //操作説明書を見えないところへ
+        iTween.MoveTo(_controlPanel, new Vector3(2540.0f, 540.0f, 0), 3.0f);
+        yield return new WaitForSeconds(0.5f);
+        //カウントダウンを表示
+        _text.gameObject.SetActive(true);
+        PanelClose = true;
+        
+    }
+
+    void ClearAll()
+    {
+        Clearall = true;
+        //ターゲットマーク非表示
+        BigBig.SetActive(false);
+        //撃破数を非表示
+        _pointChecking.SetActive(false);
+
+        StartCoroutine("CloseWindow");
+
+        Sended = true;
+
+    }
+
+    IEnumerator CloseWindow()
+    {
+        yield return new WaitForSeconds(6.0f);
+        //6秒後ゲームーを終了する；
+        Application.Quit();
+    }
+}
+                </code>
+            </pre>
+        </div>
+    </div>
+
+
+    <div onclick="obj=document.getElementById('menu2').style; obj.display=(obj.display=='none')?'block':'none';">
+        <a style="cursor:pointer;">▼ CreateSuraimu.cs</a>
+    </div>
+    <div id="menu2" style="display:none;clear:both;">
+            <div class="rollbox">
+
+        <pre>
+    <code>
+           using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CreateSuraimu : MonoBehaviour {
+
+    [SerializeField]
+    private PointCheck _pointNum;
+    public Transform[] SuraimuPrefab;
+    //倒しスライムの数
+    public int[] targetNum;
+
+    public bool GameOver = false;
+    bool CanCreate=false;
+    bool showBadEnding = true;
+    //最初からスライムが出てくる用
+    int i;
+
+	// Use this for initialization
+	void Start () {
+        StartCoroutine("CreateS");
+    }
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        if (!GameOver)
+        {
+            //-5,12 -4,4
+            #region 数調整
+            //数、Xの最小範囲(-5)、Xの最大範囲(12)、Yの最小範囲(4.5)、Yの最大範囲(4.5)、出る時間
+            if (_pointNum.point &lt;= targetNum[0])
+            {
+                create(1, -2.0f, 3.0f, 2.5f, -2.5f, 1.2f);
+            }
+            else if (_pointNum.point &lt;= targetNum[1] && _pointNum.point > targetNum[0])
+            {
+                create(2, -3.5f, 7.0f, 4.0f, -4.4f, 1.0f);
+            }
+            else if (_pointNum.point <= targetNum[2] && _pointNum.point > targetNum[1])
+            {
+                create(2, -4.0f, 9.0f, 4.0f, -4.4f, 0.8f);
+            }
+            else if (_pointNum.point <= targetNum[3] && _pointNum.point > targetNum[2])
+            {
+                create(3, -4.5f, 10.5f, 4.0f, -4.4f, 0.7f);
+            }
+            else if (_pointNum.point > targetNum[3])
+            {
+                create(4, -5.0f, 12f, 4.5f, -5.0f, 0.6f);
+            }
+            #endregion
+        }
+        else
+        {
+            //失敗
+            if (showBadEnding)
+            {
+                showBadEnding = false;
+            }   
+        }
+    }
+    IEnumerator CreateS()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            yield return new WaitForSeconds(2.5f);
+            CanCreate = true;
+        }
+    }
+     
+    /// &lt;/summary>
+    /// &lt;param 数="num"&gt;&lt;/param&gt;
+    /// &lt;param Xの最小範囲="min_X"&gt;&lt;/param&gt;
+    /// &lt;param Xの最大範囲="max_X"&gt;&lt;/param&gt;
+    /// &lt;param Yの最小範囲="min_y"&gt;&lt;/param&gt;
+    /// &lt;param Yの最大範囲="max_y"&gt;&lt;/param&gt;
+    /// &lt;param 出る時間="time"&gt;&lt;/param&gt;
+    private void create(int num, float min_X, float max_X, float min_y, float max_y, float time)
+    {
+        if (GameObject.FindGameObjectsWithTag("Red").Length + GameObject.FindGameObjectsWithTag("Yellow").Length +
+       GameObject.FindGameObjectsWithTag("Blue").Length + GameObject.FindGameObjectsWithTag("Green").Length < num)
+        {
+            Instantiate(SuraimuPrefab[Random.Range(0, 4)], new Vector3(Random.Range(min_X, max_X), Random.Range(min_y, max_y), 0), Quaternion.identity);
+            new WaitForSeconds(time);
+        }
+    }
+
+}
+   </code>
+    </pre>
+    </div>
+    </div>
+
+    <div onclick="obj=document.getElementById('menu3').style; obj.display=(obj.display=='none')?'block':'none';">
+        <a style="cursor:pointer;">▼ GetButton.cs</a>
+    </div>
+    <div id="menu3" style="display:none;clear:both;">
+            <div class="rollbox">
+                    <pre>
+    <code>
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GetButton : MonoBehaviour {
+    
+    [SerializeField]
+    private Scop _scop;
+    //ゲーム停止文字
+    [SerializeField]
+    private Text StopText;
+    //ゲーム停止の確認
+    bool _IsStop = false;
+      
+    // Use this for initialization
+    void Start () {
+        
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        #region gamestop
+        if (Input.GetKeyDown(KeyCode.JoystickButton7))
+        {
+            _IsStop = !_IsStop;
+            //動けないようにする
+            _scop.gamestop = !_scop.gamestop;
+        }
+
+        if (_IsStop)
+        {
+            //ゲーム停止
+            Time.timeScale = 0;
+            //停止文字を表示
+            StopText.gameObject.SetActive(true);
+            StopText.text = "Puase";
+        }
+        else
+        {
+            //ゲームを続き
+            Time.timeScale = 1;
+            //停止文字を非表示
+            StopText.gameObject.SetActive(false);
+        }
+        
+        #endregion
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        //スライムのいろとボダンの色が同じ場合
+        if (other.tag == "Red" && Input.GetKeyDown(KeyCode.Joystick1Button1)|| other.tag == "Yellow" && Input.GetKeyDown(KeyCode.Joystick1Button3)||
+            other.tag == "Blue" && Input.GetKeyDown(KeyCode.Joystick1Button2)|| other.tag == "Green" && Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            //Script Suraimu の方へ行きます
+            if (other.gameObject.GetComponent&lt;Suraimu&gt;().IsDeath == false)
+            {
+                //対象スライムに死亡信号を出す
+                other.gameObject.GetComponent&lt;Suraimu&gt;().IsDeath = true;
+                //正しいボダンを押した効果音
+                other.gameObject.GetComponent&lt;Suraimu&gt;().CSound();
+            }
+        }
+        //スライムのいろとボダンの色が間違えた場合
+        else if (other.tag != "Red" && Input.GetKeyDown(KeyCode.Joystick1Button1) || other.tag != "Yellow" && Input.GetKeyDown(KeyCode.Joystick1Button3) ||
+            other.tag != "Blue" && Input.GetKeyDown(KeyCode.Joystick1Button2) || other.tag != "Green" && Input.GetKeyDown(KeyCode.Joystick1Button0))
+        {
+            //間違えのボダンを押した効果音
+            other.gameObject.GetComponent&lt;Suraimu&gt;().WSound();
+        }
+    }
+    
+}
+    </code>
+    </pre>
+    </div>
+    </div>
+
+    <div onclick="obj=document.getElementById('menu4').style; obj.display=(obj.display=='none')?'block':'none';">
+        <a style="cursor:pointer;">▼ Suraimu.cs</a>
+    </div>
+    <div id="menu4" style="display:none;clear:both;">
+            <div class="rollbox">
+        <pre>
+    <code>
+    using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class Suraimu : MonoBehaviour {
+    
+    //通常の顔
+    [SerializeField]
+    private GameObject sumface;
+    //死亡の顔
+    [SerializeField]
+    private GameObject deathface;
+    //死亡時のパーティクルシステム
+    public GameObject _Star;
+    //生命数を取ったかの確認
+    public bool TakeLife = false;
+    public PointCheck gameOC;
+    //死亡信号が来た時用
+    public bool IsDeath=false;
+
+    //効果音
+    public AudioSource HitSound;
+    //正しい効果音
+    public AudioClip CurrentSound;
+    //間違えた効果音
+    public AudioClip WrongSound;
+    //最終到着場所を設定
+    Vector2[] targetPosition;
+    //Game Managerを取る
+    GameObject Target;
+    //最終到着場所
+    Vector2 finalPos;
+   
+    // Use this for initialization
+    void Start () {
+# region 最終到着点
+        targetPosition = new Vector2[]
+        {//最終到着点(x,y)(X_max=5.7,min=-5.5,y_max=4.5,mix=-4.5)
+        new Vector2(3,-1.5f),
+        new Vector2(-4, 5),
+        new Vector2(-5,4),
+        new Vector2(5,4),
+        new Vector2(1,-4),
+        new Vector2(5,-4.4f),
+        };
+
+        #endregion
+        Target = GameObject.Find("GameManager");
+        gameOC = GameObject.Find("CountPoint").GetComponent&lt;PointCheck&gt;();
+        //ランダムで、スライムの出る場所を決める
+        finalPos = targetPosition[Random.Range(0, targetPosition.Length)];
+        //通常の顔を設定
+        sumface = transform.GetChild(1).gameObject;
+        //通常の顔を表示
+        sumface.SetActive(true);
+        //死の顔亡を設定
+        deathface = transform.GetChild(0).gameObject;
+        //死の顔亡を非表示
+        deathface.SetActive(false);
+    }
+	
+	// Update is called once per frame
+	void Update () {
+
+        #region 出ると最後方向
+        if (!IsDeath)
+        {
+            //画像を大きくなる
+            transform.localScale += new Vector3(1.0f, 1.0f, 0) * Time.deltaTime;
+            //最終到着場所に移動
+            transform.position = Vector2.Lerp(this.transform.position, finalPos, 0.3f * Time.deltaTime);
+            //画像が3.5に超えた場合
+            if (this.transform.localScale.x > 3.5f)
+            {
+                //生命数を取る
+                TakeLife = true;
+                //ハート画像を消す信号を出す
+                Target.GetComponent&lt;LifePoint&gt;().DeleteLife = true;
+            }
+            //生命数を取ったか、ゲームー終了かそれどもゲームー失敗したか
+            if (TakeLife ||/*game win*/gameOC.GameClear ||/*game lose*/ Target.GetComponent&lt;GameManage&gt;().Over)
+            {
+                //自分を消す
+                Destroy(this.gameObject);
+            }
+        }
+        #endregion
+        //死亡信号を受けた場合
+        if (IsDeath) 
+        {
+            //死亡のプロセスを始まり
+            StartCoroutine("DeathPross",1f);
+        }
+
+    }
+
+    IEnumerator DeathPross()
+    {
+        //顔の変換
+        //通常の顔を非表示
+        sumface.SetActive(false);
+        //死亡の顔を表示する
+        deathface.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        //素速くに画像を小さくなる
+        iTween.ScaleTo(this.gameObject, new Vector3(0, 0, 0), 0.5f);
+        yield return new WaitForSeconds(0.1f);
+        //死亡のパーティクルシステムがプレイしてない場合
+        if (!_Star.GetComponent&lt;ParticleSystem&gt;().isPlaying)
+        {
+            //死亡のパーティクルシステムがプレイしする
+            _Star.GetComponent&lt;ParticleSystem>().Play();
+            //スライムの撃破数をプラス
+            Target.GetComponent&lt;GameManage>().Point += 1;
+        }
+        yield return new WaitForSeconds(0.2f);
+        //自分削除
+        Destroy(gameObject);
+    }
+
+    public void CSound()
+    {   
+        # region ボダンが正しい場合の音楽
+            HitSound.clip = CurrentSound;
+        if (HitSound.isPlaying)
+        {
+            HitSound.Stop();
+            HitSound.pitch = 1;
+        }
+
+        if (!HitSound.isPlaying)
+            {
+                HitSound.pitch = 3;
+                HitSound.volume = 0.6f;
+                HitSound.Play();
+            }
+            #endregion
+    }
+
+    public void WSound()
+    {
+        #region ボダンが間違いました場合の音楽
+        HitSound.clip = WrongSound;
+        if (HitSound.isPlaying)
+        {
+            HitSound.Stop();
+            HitSound.pitch = 1;
+        }
+
+        if (!HitSound.isPlaying)
+        {
+            HitSound.pitch = 1;
+            HitSound.volume = 0.6f;
+            HitSound.Play();
+        }
+        #endregion
+    }
+}
+    </code>
+    </pre>
+    </div>
+    </div>
+    <h4></h4>
+    <ul>
+        <a href="../portfolio.html">戻る</a>
+    </ul>
+</body>
+
+</html>
