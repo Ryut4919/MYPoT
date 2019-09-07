@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+    <title>HomePage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="CssFile/HPLayout.css" >
+    </head>
+    <body class="black">
+    <div class="header">
+    <h1>My Website</h1>
+    <p>Hello World</p>
+    </div>
+    <div class="row">
+    <div class="VerticalNavBar">
+        <button class="barItem button1" onclick="openPage('Aboutme')">About Me</button>
+        <button class="barItem button1" onclick="openPage('Skill')">Skill</button>
+        <button class="barItem button1" onclick="openPage('Mygame')">MyGame</button> 
+    </div>
+    <div id="Aboutme" class="bodyText page" >
+        <h2>About Me</h2>
+        <table class="aboutme">
+        <tr>
+            <th>名前:</th>
+            <td><ruby>LAI TZE HOW<rt>ライ　ツー　ハオ</rt></ruby></td>
+            </tr>
+        <tr>
+            <th>国籍:</th>
+            <td><ruby>Malaysia<rt>マレーシア</rt></ruby></td>
+        </tr>
+        <tr>
+            <th>出身校:</th>
+            <td><ruby>東京デザインテクノロジー専門学校<rt>Tech'C</rt></ruby></td>
+        </tr>
+        <tr>
+            <th>趣味:</th>
+            <td>小説を読む、ゲーム</td>
+        </tr>
+        </table>
+        
+        </div>
+    <div id="Skill" class="bodyText page" style="display:none">
+    <table class="aboutskill">
+        <tr>
+            <th>プログラム</th>
+            <th>勉強時間</th>
+        </tr>
+        <tr>
+            <th>Unity/C#</th>
+            <th>3年ぐらい</th>
+        </tr>
+        <tr>
+            <th>javascript</th>
+            <th>一年ぐらい</th>
+        </tr>
+        <tr>
+            <th>c++</th>
+            <th>一年ぐらい</th>
+        </tr>
+        <tr>
+            <th>Cocos2D</th>
+            <th>1年ぐらい</th>
+        </tr>
+        </table>
+    </div>
+    
+    <div id="Mygame" class="bodyText page" style="display:none">
+        <h2>MyGame</h2>
+        <div class="set">
+         <a href="HtmlFile/SamuraiNoIbuki.html"><img src="Image/Samurai.png" width="128" height="256" ></a>
+        </div>
+        
+    </div>
+    </div>
+   
+    <script>
+        function openPage(pageName){
+            var i;
+            var x=document.getElementsByClassName("page");
+            for(i=0;i<x.length;i++){
+                x[i].style.display="none";
+            } document.getElementById(pageName).style.display="block";
+        }
+    </script>
+    </body>
+    
+</html>

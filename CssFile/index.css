@@ -1,0 +1,94 @@
+
+.black
+{
+    padding-top:150px;
+    color:#ffffff;
+    background-color: #000000;
+}
+.center
+{
+    text-align: center;
+}
+.titleText
+{
+    font-size: 100px;
+    font-style: italic;
+    
+}
+.bodyText
+{
+    font-size: 48px;
+    font-style: italic;
+    
+}
+.bodyText a
+{
+    color:white;
+    text-decoration: none;
+    
+}
+.bodyText a:hover
+{
+    font-family:serif;
+}
+@keyframes slideInDown
+{
+    from
+    {
+     transform:translate3d(0,-1000%,0);
+        visibility:visible;
+    }
+    to
+    {
+        transform: translate3d(0,0,0);
+    }
+}
+
+.slideIn{
+    animation-duration: 2.5s;
+    animation-name: slideInDown;
+}
+
+@keyframes  FadeIn{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@-webkit-keyframes  FadeIn{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+.fadeIn
+{
+    -webkit-animation: FadeIn 4.5s linear forwards;
+    animation: FadeIn 4.5s linear forwards;
+}
+
+@-webkit-keyframe
+{
+    opacity: =0;
+}
+
+@keyframe visible{
+    opacity: =0;
+}
+
+.Visible{
+    -webkit-animation:visible;
+    animation: visible;
+}
+
