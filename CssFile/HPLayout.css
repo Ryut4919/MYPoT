@@ -95,13 +95,22 @@
 }
 
 .set{
-    display: grid;
-    grid-template-columns: 50px 50px;
     margin-left: 15%;
+    content: "";
+    clear: both;
+    display: table;
+   /* display: grid;
+    grid-template-columns: 50px 50px;
     padding: 0;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: consolas;
+    font-family: consolas;*/
+}
+
+.column{
+    float:left;
+    width: 33.33%;
+    padding: 5px;
 }
