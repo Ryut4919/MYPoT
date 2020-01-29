@@ -9,14 +9,14 @@
     </head>
     <body class="black">
     <div class="header">
-    <h1>My Website</h1>
-    <p>Hello World</p>
+    <h1>My portfolio</h1>
+    <p></p>
     </div>
     <div class="row">
     <div class="VerticalNavBar">
-        <button class="barItem button1" onclick="openPage('Aboutme')">About Me</button>
-        <button class="barItem button1" onclick="openPage('Skill')">Skill</button>
-        <button class="barItem button1" onclick="openPage('Mygame')">MyGame</button> 
+        <button class="barItem button1" onclick="openPage('Aboutme')">自己紹介</button>
+        <button class="barItem button1" onclick="openPage('Skill')">勉強言語</button>
+        <button class="barItem button1" onclick="openPage('Mygame')">作品</button> 
     </div>
     <div id="Aboutme" class="bodyText page" >
         <h2>About Me</h2>
@@ -29,6 +29,10 @@
             <th>国籍:</th>
             <td><ruby>Malaysia<rt>マレーシア</rt></ruby></td>
         </tr>
+            <tr>
+            <th>母語:</th>
+            <td>中国語</td>
+        </tr>
         <tr>
             <th>出身校:</th>
             <td><ruby>東京デザインテクノロジー専門学校<rt>Tech'C</rt></ruby></td>
@@ -36,6 +40,18 @@
         <tr>
             <th>趣味:</th>
             <td>小説を読む、ゲーム</td>
+        </tr>
+        <tr>
+            <th>資格:</th>
+            <td>JLPT N1, TOIEC IP TEST 523点, MOS Office Excel2010</td>
+        </tr>
+        <tr>
+            <th>Github:</th>
+            <td><a href="https://github.com/Ryut4919" style="color:#ffffff;text-decoration:none">Ryut4919</a></td>
+        </tr>
+        <tr>
+            <th>自己紹介：</th>
+            <td>高校からVisualBasicを勉強、専門1年からCocos2dとJavaScript、2年からはUnityとC#、C++を勉強しました。</td>
         </tr>
         </table>
         
@@ -48,35 +64,92 @@
         </tr>
         <tr>
             <th>Unity/C#</th>
-            <th>3年ぐらい</th>
+            <th>3年</th>
         </tr>
         <tr>
             <th>javascript</th>
-            <th>半年ぐらい</th>
+            <th>半年</th>
         </tr>
         <tr>
             <th>c++</th>
-            <th>1年ぐらい</th>
+            <th>1年</th>
         </tr>
         <tr>
             <th>Cocos2D</th>
-            <th>半年ぐらい</th>
+            <th>半年</th>
+        </tr>
+        <tr>
+            <th>VisualBasic</th>
+            <th>3年</th>
         </tr>
         </table>
     </div>
     
     <div id="Mygame" class="bodyText page" style="display:none">
-        <h2>Game</h2>
-        <div class="set">
-            <div class=column>
-                <a href="HtmlFile/SamuraiNoIbuki.html"><img src="Image/Samurai.png" style="width:100%"></a>
-                <p></p>
-            </div>
-            <div class=column>
-                <a href="HtmlFile/UCHinuKe-TechC.html"><img src="Image/Sum.png" style="width:50%"></a>
-            </div>
+        <h2>作った、参加した物</h2>
+        <div class="column">
+            <img src="Image/Samurai.png" style="width:512px;height:100%px;margin-right:15px;">
+            <h1>侍の息吹</h1>
+                <p>ジャンル：2dアクション</p>   
+                <p>プラットフォーム：Android</p>
+                <p>制作時間：約半年</p>
+                <p>エンジン.言語：Unity,C#</p>    
+                <p>紹介：初めてのチーム作品です。チュートリアルと敵Ai以外のプログラム担当です。</p>
         </div>
-        
+         <div class="column">
+                    <img src="Image/Figuro.png" style="width:512px;height:50%;margin-right:15px;">
+                    <h1 >Figuro</h1>
+                    <p>ジャンル：2dパズル</p>   
+                    <p>プラットフォーム：Android</p>
+                    <p>制作時間：約3が月（参加から）</p>
+                    <p>エンジン.言語：Unity,C#</p>    
+                    <p>紹介：途中に参加するチーム作品です。ステー作りと一部分のプログラム担当です。</p>
+        </div>
+         <div class="column">
+                    <img src="Image/WantedHunt.png" style="width:512px;height:512px;margin-right:15px;">
+                    <h1>WantedHunt</h1>
+                    <p>ジャンル：2dアクション</p>   
+                    <p>プラットフォーム：Kinect</p>
+                    <p>制作時間：約半年</p>    
+              <p>エンジン.言語：Unity,C#</p>           
+             <p>紹介：新宿クリエイターズ・フェスタに出展した作品です。一部分のプログラム担当です。</p>
+        </div>
+        <div class="column">
+                    <img src="Image/Sum.png" style="width:512px;height:512px;margin-right:15px;">
+                    <h1>撃ち抜け！TechC</h1>
+                    <p>ジャンル：2dシューティング</p>   
+                    <p>プラットフォーム：PC</p>
+                    <p>制作時間：約60時間</p>   
+             <p>エンジン.言語：Unity,C#</p>    
+                    <p>紹介：スライムの絵以外、全てのものを担当です。</p>
+        </div>
+         <div class="column">
+                    <img src="Image/TechRun.png" style="width:512px;height:512px;margin-right:15px;">
+                    <h1>TechRunForYourLife</h1>
+                    <p>ジャンル：3dアクション</p>   
+                    <p>プラットフォーム：PC</p>
+                    <p>制作時間：約2が月</p>   
+              <p>エンジン.言語：Unity,C#</p>    
+                    <p>紹介：3Dモデル以外、全てのものを担当です。</p>
+        </div>
+        <div class="column">
+                    <img src="Image/JumpJumpHero.png" style="width:512px;height:512px;margin-right:15px;">
+                    <h1>シャンプシャンプヒーロー！</h1>
+                    <p>ジャンル：アクション</p>   
+                    <p>プラットフォーム：PC</p>
+                    <p>制作時間：約4日</p>   
+             <p>エンジン.言語：Unity,C#</p>   
+                    <p>紹介：2018年に参加したゲームジャムの作品です。パーティクルシステムと関するプログラムの担当です。</p>
+        </div>
+        <div class="column">
+                    <img src="Image/60s.png" style="width:512px;height:512px;margin-right:15px;">
+                    <h1>60秒逃げ出す</h1>
+                    <p>ジャンル：2dアクション</p>   
+                    <p>プラットフォーム：PC</p>
+                    <p>制作時間：約2が月</p>    
+             <p>エンジン.言語：Cocos2d,JavaScript</p>   
+                    <p>紹介：1年生の時の作品です。プログラム担当です。</p>
+        </div>
     </div>
     </div>
    

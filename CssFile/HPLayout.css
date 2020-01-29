@@ -63,7 +63,7 @@
 
 .aboutskill{
     border-collapse:collapse;
-    width: 100%;
+    width: 50%;
     margin-left:15%;
 }
 
@@ -88,6 +88,30 @@
     color: black;
 }
 
+.column{
+    margin-left: 15%;
+    column-span: all;
+}
+
+ .column img{
+     float:left;
+     margin-right: 10px;
+     clear: both;
+     padding-bottom: 25px;
+}
+
+.column p{
+    margin-left:0%;
+    overflow: auto;
+    font-size:25px;
+    display: block;
+    height: auto;
+}
+
+.colimn p.clear{
+    clear: both;
+}
+/*
 .row:after{
     content: "";
     display: table;
@@ -96,21 +120,33 @@
 
 .set{
     margin-left: 15%;
-    content: "";
+    /*content: "";
     clear: both;
-    display: table;
-   /* display: grid;
-    grid-template-columns: 50px 50px;
-    padding: 0;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: consolas;*/
+    display: table;*/
 }
 
+/*
 .column{
-    float:left;
-    width: 33.33%;
-    padding: 5px;
+    width: 50%;
+    padding: 50px;
 }
+
+.column img
+{
+    float=left;
+}
+*/
+/*
+@media screen and(max-width:900px){
+    .column{
+        width: 50%;
+    }
+}
+
+@media screen and(max-width:600px){
+    .column{
+        width: 100%;
+    }
+}*/
+
+
